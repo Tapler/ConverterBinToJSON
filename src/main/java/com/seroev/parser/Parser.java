@@ -72,7 +72,7 @@ public class Parser {
                     break;
                 }
                 default: {
-                    String message = String.format("Данный тип не поддерживается: %s ", orderData);
+                    String message = String.format("Данный тип не поддерживается: tag=%s ", orderData.getTagType());
                     LOGGER.error(message);
                     throw new IllegalArgumentException(message);
                 }
@@ -119,7 +119,7 @@ public class Parser {
                     break;
                 }
                 default: {
-                    String message = String.format("Данный тип не поддерживается: %s ", itemData.toString());
+                    String message = String.format("Данный тип не поддерживается: tag=%s ", itemData.getTagType());
                     LOGGER.error(message);
                     throw new IllegalArgumentException(message);
                 }
@@ -134,6 +134,12 @@ public class Parser {
         while (bytes.length > 4) {
             int type = getValueFromTwoBytes(bytes[1], bytes[0]);
             int length = getValueFromTwoBytes(bytes[3], bytes[2]);
+
+            if (bytes.length < 4 + length) {
+                String message = String.format("Задана некорректная длина %d для типа tag=%d", length, type);
+                LOGGER.error(message);
+                throw new IllegalArgumentException(message);
+            }
 
             DataOrder data = new DataOrder(type, Arrays.copyOfRange(bytes, 4, 4 + length));
 

@@ -42,9 +42,9 @@ public class Converter {
                 return Tools.convertToLong(bytes, false) / Math.pow(10, bytes[0]);
             }
             default: {
-                String errorMessage = "Данный тип не поддерживается: " + tag;
-                LOGGER.error(errorMessage);
-                throw new IllegalArgumentException(errorMessage);
+                String message = "Данный тип не поддерживается: tag=%d" + tag;
+                LOGGER.error(message);
+                throw new IllegalArgumentException(message);
             }
 
         }
